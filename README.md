@@ -7,10 +7,10 @@ Built with FastAPI, SQLAlchemy, Jinja2, and modern HTML/CSS.
 
 ## 🔹 Features
 
-- User Authentication (Login / Logout / Register)
+- User Authentication (Login / Logout / Register / forget password)
 - Create, Edit, Delete Posts
 - Like / Unlike Posts ❤️
-- Comment System 💬
+- Comment System 💬 (Edit /Delete) only owner
 - Flash Messages & Proper Redirects
 - Session Management to prevent stale sessions
 - Responsive and modern UI
@@ -21,7 +21,7 @@ Built with FastAPI, SQLAlchemy, Jinja2, and modern HTML/CSS.
 
 - **Backend:** FastAPI, SQLAlchemy  
 - **Frontend:** HTML, CSS, Jinja2 Templates  
-- **Database:** SQLite (or your choice)  
+- **Database:** SQLite  
 - **Server:** Uvicorn  
 - **Session Management:** Starlette SessionMiddleware
 
