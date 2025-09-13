@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Login Page{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+            margin-top: 70px;
+        }
+
+       header {
+            position: fixed;   /* keeps it stuck */
+            top: 0;            /* at the very top */
+            left: 0;
+            width: 100%;       /* full width */
+            background: #2c3e50;  /* same background */
+            z-index: 1000;
+            padding: 9px ;     /* stay above content */
+            }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        nav a {
+            color: hsl(10, 20%, 88%);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: hsl(37, 90%, 51%);
+        }
+
+        .profile-icon {
+            font-size: 20px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+
+        .profile-icon:hover {
+            background: hsl(37, 90%, 51%);
+            color: white;
+        }
+
+        /* Profile dropdown styling */
+        .profile-menu {
+            position: relative; /* parent for absolute dropdown */
+        }
+
+        .profile-menu ul {
+            position: absolute;   /* overlay dropdown */
+            top: 50px;            /* below icon */
+            right: 0;
+            margin: 0;
+            padding: 20px;
+            list-style: none;
+            background: #f4f6f7;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: none;        /* hide by default */
+            min-width: 150px;
+            z-index: 100;
+        }
+
+        .profile-menu[open] ul {
+            display: block;       /* show when clicked */
+        }
+
+        main {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2, h3, h5 {
+            color: #2c3e50;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        form input, form textarea, form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        form button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #2980b9;
+        }
+
+        .flash {
+            background: #dff0d8;
+            color: #be275a;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 3px solid #d6e9c6;
+        }
+
+        li {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .aniket {
+          color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                {% if request.session and request.session.get('user_id') %}
+                    <a href="/home">Posts</a>
+                    
+                    <a href="/post/create"> Create Post</a>
+                    <a href="/mypost">My Posts</a>
+                    
+                {% else %}
+                    <a href="/">Home</a>
+                    
+                {% endif %}
+            </div>
+
+            <div class="nav-right">
+                {% if request.session and request.session.get('user_id') %}
+                    <details class="profile-menu">
+                        <summary class="profile-icon">👤</summary>
+                        <ul>
+                            {% if user %}
+                                <li>User: {{ user.username }}</li>
+                                <li>Email: {{ user.gmail }}</li>
+                                <a class="aniket" href="/logout">Logout</a> 
+                               
+                            {% endif %}
+                        </ul>
+                    </details>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% if request.session.get('flash') %}
+            <div class="flash">
+                {{ request.session.get('flash') }}
+            </div>
+            {% set _ = request.session.pop('flash', None) %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

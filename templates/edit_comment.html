@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Create post {% endblock %}
+
+{% block content %}
+
+<form action="/comments/{{ comment.id }}/edit" method="POST">
+  
+  <h2><label>Content:</label>
+    <input type="text" name="content"  value="{{ comment.content }}" placeholder="content" required></textarea><br></h2>
+  
+  <button type="submit">submit</button>
+</form>
+
+
+
+
+
+{% endblock %}

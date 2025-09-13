@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %} Posts {% endblock %}
+
+{% block content %}
+<style>
+/* Container for the heart (optional, keeps it inline) */
+.like-container {
+    display: flex;
+    align-items: center; /* vertically align heart and number */
+    gap: 5px;            /* space between heart and number */
+}
+
+.like-count {
+    font-size: 16px;     /* normal number size */
+    color: #0b0202;         /* normal text color */
+}
+
+/* Heart Like Button */
+.like-button {
+    background: none;      /* no background */
+    border: none;          /* remove border */
+    cursor: pointer;       /* pointer on hover */
+    font-size: 24px;       /* size of heart */
+    line-height: 1;        /* remove extra space */
+    padding: 0;            /* no padding */
+    margin: 0;             /* remove margin */
+    display: inline-block; /* only takes heart space */
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+/* Empty heart (Like) */
+.like-button.like {
+    color: hsl(200, 2%, 65%);       /* gray color */
+}
+.like-button #1 {
+                  color: black;
+}
+
+/* Filled heart (Unlike) */
+.like-button.unlike {
+    color: hsl(6, 92%, 47%);       /* red color */
+}
+
+/* Hover effect */
+
+
+
+</style>
+
+<div class="posts-container">
+    <div class="top-links">
+
+    </div>
+
+    {% for post in posts %}
+    <div class="post-card" id="post-{{ post.id }}"></div>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+<div class="like-container">
+    <form action="/posts/{{ post.id }}/like" method="POST" style="display:inline;">
+        <button type="submit" 
+            class="like-button {% if user and post.likes | selectattr('user_id','equalto',user.id) | list %}unlike{% else %}like{% endif %}">
+            {% if user and post.likes | selectattr("user_id","equalto",user.id) | list %}
+              ❤️
+            {% else %}
+              🤍
+            {% endif %}
+        </button>
+      </form>
+    <span class="like-count"> {{ post.likes | length }} </span>
+ 
+</div>
+        <div class="post-meta">
+            By <strong>{{ post.auther.username }}</strong> | Posted on {{ post.created_at }}
+        </div>
+
+        <div class="comments-section">
+            <h3>💬 Comments</h3>
+            <ul>
+            {% for comment in post.comments %}
+                <li id="comment--{{ comment.id }}">
+                    <strong>{{ comment.user.username }}</strong>: {{ comment.content }}</li>
+                    {% if request.session.get('user_id') == comment.user_id %}
+                        <a href="/comments/{{ comment.id }}/edit">Edit</a>
+                        <form action="/comments/{{ comment.id }}/delete" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Delete this comment?')">Delete</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        {% if request.session.get('user_id') %}
+        <div class="add-comment">
+            <form method="POST" action="/posts/{{ post.id }}/comments">
+                <textarea name="content" placeholder="Write your comment..." required></textarea>
+                <button type="submit">Add Comment</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

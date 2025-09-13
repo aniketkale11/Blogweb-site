@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %} My Post {% endblock %}
+
+{% block content %}
+<style>
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    h5 {
+        color: #7f8c8d;
+        margin: 5px 0;
+    }
+
+    .post {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .post h3 {
+        color: #34495e;
+        margin-bottom: 10px;
+    }
+
+    .post p {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #555;
+    }
+
+    .actions {
+        margin-top: 10px;
+    }
+
+    .actions a,
+    .actions button {
+        padding: 8px 12px;
+        margin-right: 8px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .actions a {
+        background: #3498db;
+        color: white;
+        border: none;
+    }
+
+    .actions a:hover {
+        background: #2980b9;
+    }
+
+    .actions button {
+        background: #e74c3c;
+        color: white;
+        border: none;
+    }
+
+    .actions button:hover {
+        background: #c0392b;
+    }
+
+    hr {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    ul.comments {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    ul.comments li {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 8px;
+        border: 1px solid #ddd;
+    }
+
+    ul.comments strong {
+        color: #2c3e50;
+    }
+</style>
+
+<h2>My Posts</h2>
+
+<hr>
+
+{% for post in posts %}
+<div class="post">
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+
+    {% if request.session.get('user_id') == post.owner_id %}
+    <div class="actions">
+        <a href="/posts/{{ post.id }}/edit">Edit</a>
+        <form action="/posts/{{ post.id }}/delet" method="POST" style="display:inline;">
+            <button type="submit" onclick="return confirm('Delete this post?')">Delete</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <hr>
+    <h4>Comments</h4>
+    <ul class="comments">
+        {% for comment in post.comments %}
+        <li>
+            <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+
+{% endblock %}

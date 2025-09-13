@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %} Forget Password {% endblock %}
+
+{% block content %}
+<style>
+    .forget-box {
+        max-width: 400px;
+        margin: 70px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .forget-box h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .forget-box label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-align: left;
+        color: #34495e;
+    }
+
+    .forget-box input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border 0.2s ease-in-out;
+    }
+
+    .forget-box input:focus {
+        border-color: #2980b9;
+        outline: none;
+    }
+
+    .forget-box button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #2980b9;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .forget-box button:hover {
+        background: #1f6391;
+    }
+</style>
+
+<div class="forget-box">
+    <h2>Forget Password</h2>
+    <form action="/forget" method="POST">
+        <label for="gmail">Gmail:</label>
+        <input type="text" name="gmail" placeholder="Enter your Gmail" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

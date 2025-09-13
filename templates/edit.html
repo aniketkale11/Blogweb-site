@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %} Edit Post {% endblock %}
+
+{% block content %}
+<style>
+    .edit-post {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .edit-post h2 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #2c3e50;
+    }
+
+    .edit-post label {
+        font-weight: bold;
+        margin-right: 10px;
+        color: #34495e;
+    }
+
+    .edit-post input[type="text"],
+    .edit-post textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+        resize: vertical;
+    }
+
+    .edit-post textarea {
+        min-height: 120px;
+    }
+
+    .edit-post button {
+        background: #2980b9;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s ease-in-out;
+    }
+
+    .edit-post button:hover {
+        background: #21618c;
+    }
+</style>
+
+<div class="edit-post">
+    <form action="/posts/{{ post.id }}/edit" method="POST">
+        <h2><label>Title:</label></h2>
+        <input type="text" name="title" value="{{ post.title }}" placeholder="title" required>
+
+        <h2><label>Content:</label></h2>
+        <textarea name="content" placeholder="content" required>{{ post.content }}</textarea><br>
+
+        <button type="submit">Update</button>
+    </form>
+</div>
+
+{% endblock %}

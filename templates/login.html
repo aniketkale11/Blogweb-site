@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<style>
+    .login-box {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .login-box h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .login-box label {
+        display: block;
+        font-weight: bold;
+        margin: 10px 0 5px;
+        text-align: left;
+        color: #34495e;
+    }
+
+    .login-box input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border 0.2s ease-in-out;
+    }
+
+    .login-box input:focus {
+        border-color: #2980b9;
+        outline: none;
+    }
+
+    .login-box button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #2980b9;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .login-box button:hover {
+        background: #1f6391;
+    }
+
+    .login-box .forgot-btn {
+        background: #95a5a6;
+        margin-left: 10px;
+    }
+
+    .login-box .forgot-btn:hover {
+        background: #7f8c8d;
+    }
+
+    .login-box a {
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+<div class="login-box">
+    <h2>Login</h2>
+    <form action="/login" method="POST">
+        <label>Username:</label>
+        <input type="text" name="username" placeholder="username" required>
+
+        <label>Password:</label>
+        <input type="password" name="password" placeholder="password" required>
+
+        <button type="submit">Submit</button>
+        <button class="forgot-btn"><a href="/forget">Forget Password</a></button>
+    </form>
+</div>
+{% endblock %}

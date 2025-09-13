@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %} Reset Password {% endblock %}
+
+{% block content %}
+<style>
+    .reset-box {
+        max-width: 400px;
+        margin: 70px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .reset-box h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .reset-box label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-align: left;
+        color: #34495e;
+    }
+
+    .reset-box input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border 0.2s ease-in-out;
+    }
+
+    .reset-box input:focus {
+        border-color: #2980b9;
+        outline: none;
+    }
+
+    .reset-box button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #27ae60;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .reset-box button:hover {
+        background: #1e8449;
+    }
+</style>
+
+<div class="reset-box">
+    <h2>Reset Your Password</h2>
+    <form action="/reset" method="POST">
+        <label for="password">New Password:</label>
+        <input type="password" name="password" placeholder="Enter new password" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

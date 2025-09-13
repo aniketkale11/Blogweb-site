@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} my page {% endblock %}
+
+{% block content %}
+
+<head>
+    <title>{{ user.username }} - Profile</title>
+</head>
+<body>
+       <details class="profile-menu">
+                    <summary class="profile-icon">👤</summary>
+                       <ul>
+                             <li>Profile of {{ user.username }}</li>
+                             <li>Email: {{ user.gmail }}</li>
+                             
+                             </ul>
+                </details>
+            
+</body>
+{% endblock %}
