@@ -7,7 +7,7 @@ from models import User , Post, Comment
 from database import Base
 
 
-router = APIRouter(1)
+router = APIRouter()
 
 templates = Jinja2Templates(directory='templates')
 
