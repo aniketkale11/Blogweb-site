@@ -88,7 +88,7 @@ async def edit_post(
     return RedirectResponse(
         url=f"/#comment--{comment.id}",
         status_code=303
-    )
+    ) 
 
 
 @router.post('/comments/{comment_id}/delete')
