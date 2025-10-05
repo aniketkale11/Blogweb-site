@@ -5,11 +5,12 @@ from blog import router as blog_router
 from comment import router as comment_router
 from database import Base , engine
 from auth import router as auth_router
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
 app.add_middleware(SessionMiddleware,secret_key = "rinki",session_cookie = "session",max_age=None)
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(blog_router , tags=['Blog'])
 app.include_router(comment_router, tags=['comment'])

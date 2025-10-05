@@ -12,7 +12,7 @@ import os
 from datetime import datetime
 from fastapi.responses import RedirectResponse
 
-router = APIRouter ( 1)
+router = APIRouter ( )
 
 
 

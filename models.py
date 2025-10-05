@@ -18,7 +18,8 @@ class User (Base):
     posts = relationship("Post", back_populates="auther")
     comments =  relationship("Comment", back_populates="user")
     likes = relationship("Like" , back_populates="user")
-
+    following = relationship("Follow", foreign_keys="Follow.follower_id", back_populates="follower")
+    followers = relationship("Follow", foreign_keys="Follow.following_id", back_populates="following")
 
 class Post(Base):
     __tablename__= "posts"
@@ -28,12 +29,12 @@ class Post(Base):
     content = Column(String , nullable=False)
     owner_id = Column(Integer , ForeignKey("users.id"))
     created_at = Column(DateTime, default=datetime.utcnow) 
-
+    image = Column(String, nullable=True)
     #Relationship
     auther = relationship("User", back_populates="posts")
     comments = relationship("Comment" , back_populates="post")
     likes = relationship('Like',back_populates="post")
-
+   # follower = relationship('Follow', back_populates="post")
 class Comment(Base):
     __tablename__ = "comments"
     id = Column(Integer , primary_key=True, index=True)
@@ -60,3 +61,20 @@ class Like(Base):
     post = relationship("Post",back_populates="likes")
 
     __table_args__ = (UniqueConstraint("user_id","post_id",name="unique_user_post"),)
+
+
+
+
+class Follow(Base):
+    __tablename__ = "follows"
+
+    id = Column(Integer , primary_key=True, index=True)
+    follower_id = Column(Integer , ForeignKey("users.id" , ondelete="CASCADE"))
+    following_id = Column(Integer , ForeignKey("users.id", ondelete="CASCADE"))
+    
+    #relationship
+    follower = relationship("User", foreign_keys=[follower_id], back_populates="following")
+    following = relationship("User", foreign_keys=[following_id], back_populates="followers")
+    #post = relationship('Post',back_populates='follower')
+
+    __table_args__ = (UniqueConstraint("follower_id","following_id" , name="unique_follow"),)

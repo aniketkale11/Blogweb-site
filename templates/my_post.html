@@ -101,7 +101,15 @@
 <div class="post">
     <h3>{{ post.title }}</h3>
     <p>{{ post.content }}</p>
-
+    {% if post.image %}
+       {% if post.image.endswith(('.jpg', '.jpeg', '.png', '.gif')) %}
+        <img src="/static/uploads/{{ post.image }}" alt="Post Image" style="max-width:100%; margin-bottom:10px;">
+       {% else %}
+       <video width="320" height="240" controls>
+        <source src="/static/uploads/{{ post.image }}">
+       </video>
+       {% endif %}
+    {% endif %}
     {% if request.session.get('user_id') == post.owner_id %}
     <div class="actions">
         <a href="/posts/{{ post.id }}/edit">Edit</a>

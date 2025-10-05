@@ -60,15 +60,52 @@
 </style>
 
 <div class="create-post">
-    <form action="/post/create" method="POST">
+   <!-- <form action="/post/create" method="POST">
         <h2><label>Title:</label></h2>
         <input type="text" name="title" placeholder="title" required>
 
         <h2><label>Content:</label></h2>
         <textarea name="content" placeholder="content" required></textarea><br>
 
+        <input type="file" name="image" accept="image/">
+
         <button type="submit">Submit</button>
-    </form>
+    </form>-->
+    <form method="POST" action="/post/create" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Title" required>
+    <textarea name="content" placeholder="Content" required></textarea>
+    <input type="file" name="image" accept="image/*,video/*,audio/*"> <!-- UploadFile comes from this -->
+    <button type="submit">Create Post</button>
+</form>
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

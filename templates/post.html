@@ -7,84 +7,142 @@
 /* Container for the heart (optional, keeps it inline) */
 .like-container {
     display: flex;
-    align-items: center; /* vertically align heart and number */
-    gap: 5px;            /* space between heart and number */
+    align-items: center;
+    gap: 5px;
 }
 
 .like-count {
-    font-size: 16px;     /* normal number size */
-    color: #0b0202;         /* normal text color */
+    font-size: 16px;
+    color: #0b0202;
 }
 
-/* Heart Like Button */
 .like-button {
-    background: none;      /* no background */
-    border: none;          /* remove border */
-    cursor: pointer;       /* pointer on hover */
-    font-size: 24px;       /* size of heart */
-    line-height: 1;        /* remove extra space */
-    padding: 0;            /* no padding */
-    margin: 0;             /* remove margin */
-    display: inline-block; /* only takes heart space */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
     transition: transform 0.2s ease, color 0.3s ease;
 }
 
-/* Empty heart (Like) */
-.like-button.like {
-    color: hsl(200, 2%, 65%);       /* gray color */
-}
-.like-button #1 {
-                  color: black;
-}
+.like-button.like { color: hsl(200, 2%, 65%); }
+.like-button.unlike { color: hsl(6, 92%, 47%); }
 
-/* Filled heart (Unlike) */
-.like-button.unlike {
-    color: hsl(6, 92%, 47%);       /* red color */
+/* Inline actions for follow/unfollow */
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 8px 0;
 }
 
-/* Hover effect */
+.follow-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0;
+}
 
+/* Delete button styling */
+.comment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* text on left, delete button on right */
+}
 
+.comment-text {
+    flex: 1; /* take full width left for text */
+}
 
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #e74c3c; /* red */
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0 5px;
+    transition: color 0.2s ease;
+}
+.delete-button:hover {
+    color: #c0392b; /* darker red on hover */
+    text-decoration: underline;
+}
 </style>
 
 <div class="posts-container">
-    <div class="top-links">
-
-    </div>
-
-    {% for post in posts %}
-    <div class="post-card" id="post-{{ post.id }}"></div>
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
-<div class="like-container">
-    <form action="/posts/{{ post.id }}/like" method="POST" style="display:inline;">
-        <button type="submit" 
-            class="like-button {% if user and post.likes | selectattr('user_id','equalto',user.id) | list %}unlike{% else %}like{% endif %}">
-            {% if user and post.likes | selectattr("user_id","equalto",user.id) | list %}
-              ❤️
+    {% for item in posts %}
+   
+    <div class="post-card" id="post-{{ item.post.id }}">
+        <h2>{{ item.highlight_title | safe }}</h2>
+        {% if item.post.image %}
+            {% if item.post.image.endswith(('.jpg', '.jpeg', '.png', '.gif')) %}
+                <img src="/static/uploads/{{ item.post.image }}" width="300">
+            {% elif item.post.image.endswith(('.mp3','.wav','.ogg','.aac','.flac')) %}
+                <audio controls>
+                    <source src="/static/uploads/{{ item.post.image }}" type="audio/mpeg">
+                </audio>
+            {% elif item.post.image.endswith(('.mp4','.mov','.avi','.mkv','.flv','.wmv')) %}
+                <video width="320" height="240" controls>
+                    <source src="/static/uploads/{{ item.post.image }}" type="video/mp4">
+                </video>
             {% else %}
-              🤍
+              pass 
             {% endif %}
-        </button>
-      </form>
-    <span class="like-count"> {{ post.likes | length }} </span>
- 
-</div>
+        {% endif %}
+        <p>{{ item.highlight_content | safe }}</p>
+
         <div class="post-meta">
-            By <strong>{{ post.auther.username }}</strong> | Posted on {{ post.created_at }}
+            By <strong>{{ item.post.auther.username }}</strong> | Posted on {{ item.post.created_at.date() }}
         </div>
 
+        <!-- Follow/Unfollow + Followers Count -->
+        <div class="post-actions">
+            {% if user.id != item.post.owner_id %}
+            <form action="/follow/{{ item.post.owner_id }}" method="POST" style="display:inline;">
+                <button type="submit" class="follow-button">
+                    {% if item.is_following %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+
+        <!-- Like Section -->
+        <div class="like-container">
+            <form action="/posts/{{ item.post.id }}/like" method="POST" style="display:inline;">
+                <button type="submit" 
+                    class="like-button {% if user and item.post.likes | selectattr('user_id','equalto',user.id) | list %}unlike{% else %}like{% endif %}">
+                    {% if user and item.post.likes | selectattr("user_id","equalto",user.id) | list %}
+                        ❤️
+                    {% else %}
+                        🤍
+                    {% endif %}
+                </button>
+            </form>
+            <span class="like-count">{{ item.post.likes | length }}</span>
+        </div>
+
+        <!-- Comments Section -->
         <div class="comments-section">
             <h3>💬 Comments</h3>
             <ul>
-            {% for comment in post.comments %}
+            {% for comment in item.post.comments %}
                 <li id="comment--{{ comment.id }}">
-                    <strong>{{ comment.user.username }}</strong>: {{ comment.content }}</li>
+                    <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
                     {% if request.session.get('user_id') == comment.user_id %}
                         <a href="/comments/{{ comment.id }}/edit">Edit</a>
                         <form action="/comments/{{ comment.id }}/delete" method="POST" style="display:inline;">
-                            <button type="submit" onclick="return confirm('Delete this comment?')">Delete</button>
+                            <button type="submit" class="delete-button" onclick="return confirm('Delete this comment?')">Delete</button>
                         </form>
                     {% endif %}
                 </li>
@@ -92,9 +150,10 @@
             </ul>
         </div>
 
+        <!-- Add Comment -->
         {% if request.session.get('user_id') %}
         <div class="add-comment">
-            <form method="POST" action="/posts/{{ post.id }}/comments">
+            <form method="POST" action="/posts/{{ item.post.id }}/comments">
                 <textarea name="content" placeholder="Write your comment..." required></textarea>
                 <button type="submit">Add Comment</button>
             </form>
@@ -103,6 +162,4 @@
     </div>
     {% endfor %}
 </div>
-
-
 {% endblock %}

@@ -157,6 +157,10 @@
                     
                     <a href="/post/create"> Create Post</a>
                     <a href="/mypost">My Posts</a>
+                    <form  method="GET" action="/home">
+                        <input type="text" name="q" placeholder="Search post">
+                        
+                    </form>
                     
                 {% else %}
                     <a href="/">Home</a>
@@ -172,6 +176,17 @@
                             {% if user %}
                                 <li>User: {{ user.username }}</li>
                                 <li>Email: {{ user.gmail }}</li>
+                                <details>
+                                    <summary> Followers: {{ followers_count }} </summary>
+                                    <ul>
+                                   {% for follower in follow %}
+                                    <li>{{ follower }}</li>
+                                  {% endfor %}
+                                   </ul>
+                                   </details>
+                                
+
+                               <!-- <li> Followers: {{ followers_count }}</li>-->
                                 <a class="aniket" href="/logout">Logout</a> 
                                
                             {% endif %}
@@ -194,3 +209,11 @@
     </main>
 </body>
 </html>
+
+
+
+
+
+
+
+
