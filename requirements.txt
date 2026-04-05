@@ -1,7 +1,7 @@
-fastapi==0.100.1
+fastapi
 uvicorn[standard]
 SQLAlchemy
-Jinja2==3.0.3
+Jinja2
 python-multipart
 itsdangerous
 email-validator
@@ -9,4 +9,3 @@ passlib[bcrypt]
 python-dotenv
 aiofiles
 gunicorn
-starlette==0.27.0
