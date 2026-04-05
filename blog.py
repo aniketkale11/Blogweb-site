@@ -50,7 +50,10 @@ async def home (
     else:
         # if not logged in, show welcome page
         request.session.clear()
-        return templates.TemplateResponse("new.html", {"request": request})
+        return templates.TemplateResponse(
+            "new.html",
+            request=request
+        )
 
 """
 @router.get('/home')
@@ -65,10 +68,10 @@ async def get_post(
     user = db.query(User).filter(User.id == user_id).first()
 
     return templates.TemplateResponse(
-        'post.html',
-        {'request':request,
-        "posts":posts,"user":user}
-    )
+            "post.html",
+            request=request,
+            context={"posts": posts, "user": user}
+        )
 """
 
 
@@ -149,10 +152,10 @@ async def get_post(
 
     
     return templates.TemplateResponse(
-        "post.html",
-        {"request": request, "posts": posts_with_status, "user": user,"followers_count":user_followers_count,
-         "follow":followers_list}
-    )
+            "post.html",
+            request=request,
+            context={"posts": posts_with_status, "user": user, "followers_count": user_followers_count, "follow": followers_list}
+        )
 
 
 #show single or particultar post 
@@ -173,9 +176,10 @@ async def my_post(
     user = db.query(User).filter(User.id == user_id).first()
     request.session['flash']= "Post  not found"
     return templates.TemplateResponse(
-        'my_post.html',
-        {'request':request , "posts":posts,'user':user}
-    )
+            "my_post.html",
+            request=request,
+            context={"posts": posts, "user": user}
+        )
 
 @router.post('/posts/{post_id}/like')
 async def like_post(
@@ -263,9 +267,9 @@ async def  create_post(
     
     if request.method == "GET":
         return templates.TemplateResponse(
-            'create_post.html',
-            {'request':request,
-             'user':user}
+            "create_post.html",
+            request=request,
+            context={"user": user}
         )
     #if 'user_id' not in request.session:
      #   return RedirectResponse(url='/login',status_code=303)
@@ -307,8 +311,9 @@ async def edit_post(
     
     if request.method == "GET":
         return templates.TemplateResponse(
-            'edit.html',
-            {'request':request,'post':post}
+            "edit.html",
+            request=request,
+            context={"post": post}
         )
     
     if post.owner_id != request.session.get('user_id'):
@@ -345,5 +350,3 @@ async def delete_post(
 
     request.session['flash'] = "Post Deleted....!"
     return RedirectResponse(url=request.headers.get("referer"),status_code=303)
-
-
