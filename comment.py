@@ -68,7 +68,8 @@ async def edit_post(
     if request.method == "GET":
         return templates.TemplateResponse(
             "edit_comment.html",
-            {"request": request, "comment": comment}
+            request=request,
+            context={"comment": comment}
         )
 
     # Handle POST (update comment)
@@ -116,4 +117,3 @@ async def delete_comment(
     db.commit()
     request.session['flash']= "comment deleted....!"
     return RedirectResponse(url="/home",status_code=303)
-
