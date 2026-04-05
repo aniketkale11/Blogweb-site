@@ -296,6 +296,7 @@ async def edit_post(
     request:Request,
     title:str = Form(None),
     content:str = Form(None),
+    image: UploadFile = File(None),
     db:Session = Depends(get_data)
 ):
     
@@ -316,6 +317,7 @@ async def edit_post(
     
     post.title = title
     post.content = content
+    post.image = image
     db.commit()
 
     request.session['flash']= "update successfully...!"

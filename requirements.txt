@@ -8,4 +8,4 @@ email-validator
 passlib[bcrypt]==1.7.4
 python-dotenv==1.0.0
 aiofiles==23.1.0
-
+gunicorn
