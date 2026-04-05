@@ -50,10 +50,7 @@ async def home (
     else:
         # if not logged in, show welcome page
         request.session.clear()
-        return templates.TemplateResponse(
-            "new.html",
-            request=request
-        )
+        return templates.TemplateResponse("new.html", request=request)
 
 """
 @router.get('/home')
