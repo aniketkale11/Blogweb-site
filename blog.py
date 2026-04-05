@@ -102,7 +102,7 @@ async def get_post(
     #followers_count = db.query(Follow).filter_by(following_id=post.owner_id).count()
 
 
-    # प्रत्येक post साठी current user follow करतो का ते तपासा
+    
     posts_with_status = []
     for post in posts:
         is_following = db.query(Follow).filter_by(
