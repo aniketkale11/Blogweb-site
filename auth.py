@@ -23,7 +23,7 @@ async def registration (
     if request.method =="GET":
         return templates.TemplateResponse(
             "register.html",
-            {'request':request}
+            request=request
         )
     
     existing_user = db.query(User).filter(User.gmail == gmail).first()
@@ -54,8 +54,8 @@ async def login(
 ):
     if request.method == "GET":
         return templates.TemplateResponse(
-            'login.html',
-            {'request':request}
+            "login.html",
+            request=request
         )
     
     user = db.query(User).filter(User.username == username , User.password == password).first()
@@ -91,8 +91,8 @@ async def forget(
 ):
     if request.method == "GET":
         return templates.TemplateResponse(
-            'forget.html',
-            {'request':request}
+            "forget.html",
+            request=request
         )
     
     user = db.query(User).filter(User.gmail == gmail).first()
@@ -115,8 +115,8 @@ async def reset(
 ):
     if request.method == "GET":
         return templates.TemplateResponse(
-            'reset.html',
-            {'request':request}
+            "reset.html",
+            request=request
         )
     
     if not password:
@@ -144,6 +144,3 @@ async def reset(
     
     request.session["flash"] = "Something Went wrong"
     return RedirectResponse(url='/login',status_code=303)
-
-    
-
